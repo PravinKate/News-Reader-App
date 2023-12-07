@@ -11,8 +11,6 @@ public class News implements Parcelable {
     private String publishedAt;
     private String content;
 
-    // Constructors, getters, and setters
-
     // Parcelable implementation
     protected News(Parcel in) {
         title = in.readString();
@@ -20,6 +18,7 @@ public class News implements Parcelable {
         url = in.readString();
         urlToImage = in.readString();
         publishedAt = in.readString();
+        content = in.readString();
     }
 
     public static final Creator<News> CREATOR = new Creator<News>() {
@@ -46,8 +45,10 @@ public class News implements Parcelable {
         dest.writeString(url);
         dest.writeString(urlToImage);
         dest.writeString(publishedAt);
+        dest.writeString(content);
     }
 
+    // Constructors, getters, and setters
     public String getTitle() {
         return title;
     }

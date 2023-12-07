@@ -2,12 +2,14 @@ package com.example.newsreader.news_reader.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.example.newsreader.BuildConfig;
 import com.example.newsreader.R;
 import com.example.newsreader.news_reader.adapters.NewsAdapter;
 import com.example.newsreader.news_reader.contract.NewsApi;
@@ -34,8 +36,9 @@ public class MainActivity extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        String apiKey = "f43d928df4a44b268d63c34f5345ff88";
-        String sources = "google-news";
+//        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        String apiKey = BuildConfig.API_KEY;
+        String sources = "bbc-news";
         int pageSize = 100;
 
         NewsApi newsApi = RetrofitClient.getClient().create(NewsApi.class);

@@ -39,6 +39,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         // Bind data to ViewHolder views
         holder.titleTextView.setText(news.getTitle());
         holder.descriptionTextView.setText(news.getDescription());
+        holder.publishedDateTextView.setText("Published at: " + news.getPublishedAt());
         // Load image using Glide
         Glide.with(context)
                 .load(news.getUrlToImage())
@@ -62,12 +63,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
         TextView titleTextView;
+        TextView publishedDateTextView;
         TextView descriptionTextView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.news_image);
             titleTextView = itemView.findViewById(R.id.news_title);
+            publishedDateTextView = itemView.findViewById(R.id.news_date);
             descriptionTextView = itemView.findViewById(R.id.news_description);
         }
     }
