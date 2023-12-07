@@ -13,6 +13,7 @@ android {
         versionCode = 1
         versionName = "1.0"
         android.buildFeatures.buildConfig = true
+        multiDexEnabled = true
         buildConfigField("String", "API_KEY", "\"f43d928df4a44b268d63c34f5345ff88\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,5 +47,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     implementation("com.github.bumptech.glide:glide:4.14.2")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
 
 }

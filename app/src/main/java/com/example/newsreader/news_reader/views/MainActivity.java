@@ -35,8 +35,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.recycler_view);
+        newsList = new ArrayList<>();
+        newsAdapter = new NewsAdapter(newsList, this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setAdapter(newsAdapter);
+        newsAdapter.setShimmer(true);
+
         String apiKey = BuildConfig.API_KEY;
         String sources = "bbc-news";
         int pageSize = 100;
@@ -49,14 +55,15 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<NewsResponse> call, @NonNull Response<NewsResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     newsList = response.body().getArticles();
-                    newsAdapter = new NewsAdapter(newsList, MainActivity.this);
-                    recyclerView.setAdapter(newsAdapter);
+                    newsAdapter.setData(newsList);
+                    newsAdapter.setShimmer(false);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<NewsResponse> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, "Failed to load news", Toast.LENGTH_SHORT).show();
+                newsAdapter.setShimmer(false);
             }
         });
     }

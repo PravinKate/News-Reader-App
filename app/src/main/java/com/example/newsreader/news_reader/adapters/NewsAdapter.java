@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.newsreader.R;
 import com.example.newsreader.news_reader.models.News;
+import com.example.newsreader.news_reader.utils.AppUtils;
 import com.example.newsreader.news_reader.views.SecondActivity;
 import java.util.List;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private List<News> newsList;
     private Context context;
+    private boolean isShimmer = true;
 
     public NewsAdapter(List<News> newsList, Context context) {
         this.newsList = newsList;
@@ -28,7 +30,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
+        View view;
+        if (isShimmer) {
+            // Use the shimmer layout for placeholder
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.shimmer_news_item, parent, false);
+        } else {
+            // Use the regular news item layout
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.news_item, parent, false);
+        }
         return new ViewHolder(view);
     }
 
@@ -39,16 +48,13 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
         // Bind data to ViewHolder views
         holder.titleTextView.setText(news.getTitle());
         holder.descriptionTextView.setText(news.getDescription());
-        holder.publishedDateTextView.setText("Published at: " + news.getPublishedAt());
-        // Load image using Glide
+        holder.publishedDateTextView.setText("Published at: " + AppUtils.convertDate(news.getPublishedAt()));
         Glide.with(context)
                 .load(news.getUrlToImage())
                 .placeholder(R.drawable.ic_launcher_foreground) // Placeholder image while loading
                 .into(holder.imageView);
 
-        // Handle click events
         holder.itemView.setOnClickListener(view -> {
-            // Open second screen with detailed news content
             Intent intent = new Intent(context, SecondActivity.class);
             intent.putExtra("news", news);
             context.startActivity(intent);
@@ -58,6 +64,17 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return newsList.size();
+    }
+
+    // Method to toggle between shimmer and actual data
+    public void setShimmer(boolean shimmer) {
+        isShimmer = shimmer;
+        notifyDataSetChanged();
+    }
+
+    public void setData(List<News> newsList) {
+        this.newsList = newsList;
+        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
